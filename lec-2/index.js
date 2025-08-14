@@ -6,3 +6,4 @@ function sub(a,b){
 }
 module.exports.add=add;
 module.exports.sub=sub;
+export default mult;

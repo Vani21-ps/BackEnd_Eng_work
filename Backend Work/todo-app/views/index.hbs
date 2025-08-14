@@ -1,0 +1,34 @@
+<h1>To-Do List</h1>
+<form action="/add" method="POST">
+  <input name="title" placeholder="Title" required />
+  <input name="description" placeholder="Description" />
+  <select name="priority">
+    <option>Low</option>
+    <option selected>Medium</option>
+    <option>High</option>
+  </select>
+  <input name="deadline" type="date" />
+  <button type="submit">Add Task</button>
+</form>
+<ul>
+  {{#each tasks}}
+    <li class="{{#if completed}}done{{/if}}">
+      <strong>{{title}}</strong> - {{description}} - {{priority}} - {{deadline}}
+      {{#unless completed}}
+        <form action="/complete/{{_id}}" method="POST" style="display:inline"><button>Done</button></form>
+      {{/unless}}
+      <form action="/delete/{{_id}}" method="POST" style="display:inline"><button>Delete</button></form>
+      <form action="/edit/{{_id}}" method="POST" style="display:inline">
+        <input name="title" value="{{title}}" />
+        <input name="description" value="{{description}}" />
+        <select name="priority">
+          <option {{#if (eq priority 'Low')}}selected{{/if}}>Low</option>
+          <option {{#if (eq priority 'Medium')}}selected{{/if}}>Medium</option>
+          <option {{#if (eq priority 'High')}}selected{{/if}}>High</option>
+        </select>
+        <input name="deadline" type="date" value="{{deadline}}" />
+        <button>Update</button>
+      </form>
+    </li>
+  {{/each}}
+</ul>

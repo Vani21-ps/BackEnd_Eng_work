@@ -8,7 +8,7 @@ let todo={
 }
 let ul=document.querySelector(".todoList")
 
-function addToDo(){
+function addToDo(todo){
     let li =document.createElement("li");
     li.setAttribute("id",`${todo.id}`)
     li.innerhtml=`<div>
@@ -22,4 +22,4 @@ function addToDo(){
             </div>`
             ul.appendChild(li);
 }
-addTodo();
+addTodo(todo);

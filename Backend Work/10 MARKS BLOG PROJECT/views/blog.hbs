@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blog.com</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".blog-card").forEach(card => {
+        card.addEventListener("click", async () => {
+          const id = card.getAttribute("data-id");
+          const contentDiv = document.getElementById(`content-${id}`);
+
+          // Collapse other blogs
+          document.querySelectorAll(".blog-content").forEach(div => {
+            if (div.id !== `content-${id}`) {
+              div.style.display = "none";
+              div.innerHTML = "";
+            }
+          });
+
+          if (contentDiv.style.display === "block") {
+            contentDiv.style.display = "none";
+            contentDiv.innerHTML = "";
+          } else {
+            const res = await fetch(`/api/blog/${id}`);
+            const data = await res.json();
+            contentDiv.innerHTML = `
+              <p>${data.content}</p>
+              <p style="color:gray;">Views: ${data.viewer || 0}</p>
+            `;
+            contentDiv.style.display = "block";
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <header>Blog.com</header>
+  <div id="blog-container">
+    {{#each blogs}}
+      <div class="blog-card" data-id="{{this._id}}">
+        <img src="{{this.image}}" alt="{{this.title}}" />
+        <a href ="/users/"></a>
+        <h2>{{this.title}}</h2>
+        <div class="blog-content" id="content-{{this._id}}"></div>
+      </div>
+    {{/each}}
+  </div>
+</body>
+</html>

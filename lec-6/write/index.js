@@ -19,3 +19,4 @@ fs.writeFile("../B.txt","World",function(err,data){
     console.log("succ!!")
 })
 
+

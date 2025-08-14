@@ -1,0 +1,4 @@
+body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 1rem; }
+ul { list-style-type: none; padding: 0; }
+li { margin: 0.5rem 0; padding: 0.5rem; border-bottom: 1px solid #ccc; }
+.done { text-decoration: line-through; color: gray; }

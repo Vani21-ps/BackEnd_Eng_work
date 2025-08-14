@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Task Manager</h1>
+
+    <!-- Add Task Form -->
+    <form id="add-task-form">
+        <input type="text" id="task-title" placeholder="Enter task title" required />
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Task List -->
+    <ul id="task-list">
+        <% tasks.forEach(task => { %>
+            <li id="task-<%= task.id %>">
+                <span><%= task.title %></span>
+                <button class="delete-btn" data-id="<%= task.id %>">❌ Delete</button>
+                <button class="update-btn" data-id="<%= task.id %>">✏️ Edit</button>
+            </li>
+        <% }) %>
+    </ul>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Add Task
+            document.getElementById("add-task-form").addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                const title = document.getElementById("task-title").value.trim();
+                if (!title) return alert("Task title cannot be empty");
+
+                try {
+                    const response = await fetch("/add", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ title })
+                    });
+
+                    if (response.ok) {
+                        window.location.reload();  // ✅ Refresh UI after adding task
+                    } else {
+                        alert("Failed to add task");
+                    }
+                } catch (error) {
+                    console.error("Error adding task:", error);
+                }
+            });
+
+            // Delete Task
+            async function deleteTask(taskId) {
+                try {
+                    const response = await fetch(`/delete/${taskId}`, { method: "DELETE" });
+
+                    if (response.ok) {
+                        document.getElementById(`task-${taskId}`).remove();  // ✅ Remove from UI
+                    } else {
+                        alert("Failed to delete task");
+                    }
+                } catch (error) {
+                    console.error("Error deleting task:", error);
+                }
+            }
+
+            // Update Task
+            async function updateTask(taskId, updatedTitle) {
+                try {
+                    const response = await fetch(`/update/${taskId}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ title: updatedTitle, completed: false })
+                    });
+
+                    if (response.ok) {
+                        window.location.reload();  // ✅ Refresh UI after updating task
+                    } else {
+                        alert("Failed to update task");
+                    }
+                } catch (error) {
+                    console.error("Error updating task:", error);
+                }
+            }
+
+            // Attach Delete Button Listeners
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", () => deleteTask(button.getAttribute("data-id")));
+            });
+
+            // Attach Update Button Listeners
+            document.querySelectorAll(".update-btn").forEach(button => {
+                button.addEventListener("click", async () => {
+                    const newTitle = prompt("Enter new task title:");
+                    if (newTitle) {
+                        await updateTask(button.getAttribute("data-id"), newTitle);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

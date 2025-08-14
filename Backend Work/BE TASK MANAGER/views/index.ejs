@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Task Manager</h1>
+
+    <form id="add-task-form" method="POST" action="/add">
+        <input type="text" id="task-title" name="title" placeholder="New Task" required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <ul>
+        <% tasks.forEach(task => { %>
+            <li id="task-<%= task.id %>">
+                <%= task.title %>
+                <button class="delete-btn" data-id="<%= task.id %>">Delete</button>
+            </li>
+        <% }) %>
+    </ul>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", async () => {
+                    const taskId = button.getAttribute("data-id");
+                    await fetch(`/delete/${taskId}`, { method: "DELETE" });
+                    button.parentElement.remove();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

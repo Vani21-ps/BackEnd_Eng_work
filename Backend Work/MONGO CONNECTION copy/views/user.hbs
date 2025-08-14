@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{> header }}
+    <h1>
+        userpage
+    </h1>
+    <h4> username is {{name}}</h4>
+    <h1> Followers are</h1>
+    <ul>
+    {{!-- {{#each followers as |f|}}
+    <li>{{f}}</li>
+    {{/each}}--}}
+    {{#each followers}}
+    <div> 
+        <h1> {{name}}</h1>
+        <h3> {{email}}</h3>
+        <p> {{password}} </p>
+        <a href="/users/{{_id}}">Profile</a>
+    </div>
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+      <header>
+
+        <a href="/user">user page</a>
+        <a href="/blog">blog</a>
+        <a href="/">home</a>
+
+    </header>
+  
+</body>
+</html>
