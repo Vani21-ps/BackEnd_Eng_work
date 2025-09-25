@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register User</title>
+</head>
+<body>
+  <h1>Register New User</h1>
+  <form id="registerForm">
+    <label>Name:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Email:</label><br>
+    <input type="email" name="email" required><br><br>
+
+    <label>Roll No.:</label><br>
+    <input type="text" name="rollno" required><br><br>
+
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <br><br>
+  <a href="/index.html">Go to Home Page</a>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch('/user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        window.location.href = '/index.html';
+      } else {
+        alert('Error: Unable to register user.');
+      }
+    });
+  </script>
+</body>
+</html>
