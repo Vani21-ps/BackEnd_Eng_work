@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Users</title>
+</head>
+<body>
+  <h1>Registered Users</h1>
+  <ul id="userList"></ul>
+
+  <br>
+  <a href="/register.html">Register New User</a>
+
+  <script>
+    async function loadUsers() {
+      const res = await fetch('/users');
+      const users = await res.json();
+
+      const userList = document.getElementById('userList');
+      userList.innerHTML = '';
+
+      if (users.length === 0) {
+        userList.innerHTML = '<li>No users yet.</li>';
+        return;
+      }
+
+      users.forEach(user => {
+        const li = document.createElement('li');
+        li.textContent = `${user.name} | ${user.email} | Roll No: ${user.rollno}`;
+        userList.appendChild(li);
+      });
+    }
+
+    loadUsers();
+  </script>
+</body>
+</html>
