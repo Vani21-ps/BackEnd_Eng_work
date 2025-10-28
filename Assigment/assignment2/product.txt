@@ -1,0 +1,5 @@
+Laptop,50000
+Phone,20000
+Tablet,15000
+Headphones,3000
+Mouse,800
