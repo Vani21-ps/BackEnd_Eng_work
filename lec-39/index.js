@@ -17,10 +17,17 @@ app.post("/sum", (req, res) => {
    });
 });
 app.post("/multiply", (req, res) => {
+    if(!req.body.a||!req.body.b){
+        return res.json({ 
+            success: false,
+            message:"invalid argument"
+           })
+        }
+        
     let { a, b } = req.body;
     res.json({
         success: true,
-        data: a * b
+        data: a*b
     });
 });
 
